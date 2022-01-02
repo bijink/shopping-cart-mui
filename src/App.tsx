@@ -5,7 +5,8 @@ import { Badge, Drawer, Grid, LinearProgress } from "@mui/material";
 import { AddShoppingCart } from "@mui/icons-material";
 import Item from "./Item/Item";
 // Styled
-import { Wrapper } from "./App.styles";
+import { Wrapper, StyledButton } from "./App.styles";
+
 
 // Types
 export type CartItemType = {
@@ -27,10 +28,13 @@ const App = () => {
    //    .then(res => res.json())
    //    .then(json => console.log(json));
 
+   const [cartOpen, setCartOpen] = useState(false);
+   const [cartItems, setCartItems] = useState([] as CartItemType[]);
+
    const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
    console.log(data);
 
-   const getTotalItems = () => null;
+   const getTotalItems = (items: CartItemType[]) => null;
    const handleAddToCart = (clickedItem: CartItemType) => null;
    const handleRemoveFromCart = () => null;
 
@@ -39,6 +43,18 @@ const App = () => {
 
    return (
       <Wrapper>
+         <Drawer
+            anchor="right"
+            open={cartOpen}
+            onClose={() => setCartOpen(false)}
+         >
+            cart goes here
+         </Drawer>
+         <StyledButton onClick={() => setCartOpen(true)}>
+            <Badge badgeContent={getTotalItems(cartItems)} color='error'>
+               <AddShoppingCart />
+            </Badge>
+         </StyledButton>
          <Grid container spacing={3}>
             {
                data?.map((item => (
